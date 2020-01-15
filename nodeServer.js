@@ -2,6 +2,7 @@ const http = require('http');
 const querystring = require('querystring');
 
 const server = http.createServer((req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
     let data = '';
     req.on('data', chunk => {
         data += chunk.toString();
@@ -15,7 +16,7 @@ const server = http.createServer((req, res) => {
    
     res.statusCode = 200;
     res.setHeader('Content-Type', 'text/plain');
-    res.end('Hello World\n');
+    res.end({Error : 0 , Message : 'Successful'});
 });
 
 server.listen(3000, () => {
