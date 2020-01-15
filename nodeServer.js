@@ -9,14 +9,14 @@ const server = http.createServer((req, res) => {
         console.log(data);
     });
 
-    req.on('end',() => {
-       let rawData = querystring.parse(data);
-       console.log(parseInt(rawData.temp));
+    req.on('end', () => {
+        let rawData = querystring.parse(data);
+        console.log(parseInt(rawData.temp));
     })
-   
+
     res.statusCode = 200;
     res.setHeader('Content-Type', 'text/plain');
-    res.end({Error : 0 , Message : 'Successful'});
+    res.end({ Error: 0, Message: 'Successful' });
 });
 
 server.listen(3000, () => {

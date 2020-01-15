@@ -27,11 +27,11 @@ const encode = (input) => {
 
 /**
  * Unfilters filtered input
- * @param {String} input 
+ * @param {String} input
  */
 const decode = (input) => {
   return decodeURIComponent(input);
 }
 
-console.log(encode(";"+"<script>alert('xss')</script>"));
-console.log(decode(encode("<script>alert('xss')</script>")));
+// console.log(encode(";" + "<script>alert('xss')</script>"));
+// console.log(decode(encode("<script>alert('xss')</script>")));
