@@ -4,6 +4,7 @@
  * @version 1.0
  */
 
+
 /**
  * Filters input
  * @param {String} input 
@@ -35,3 +36,5 @@ const decode = (input) => {
 
 // console.log(encode(";" + "<script>alert('xss')</script>"));
 // console.log(decode(encode("<script>alert('xss')</script>")));
+
+module.exports = { encode, decode }
