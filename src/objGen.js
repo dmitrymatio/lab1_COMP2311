@@ -1,7 +1,7 @@
 /**
  * @author Don (dl90)
- * @date January 16, 2020
- * @version 1.0
+ * @date January 18, 2020
+ * @version 1.1
  */
 
 
@@ -22,9 +22,29 @@ const crypto = require('crypto');
 //   historyId: "hashed history path"
 // }
 
+// user history template
+// const history = {
+//   dateTime = "dateTime",
+//   temp = "temp"
+// }
 
-console.log(JSON.stringify(userMaker(1, "Don1", '123@abc.com', "123abc")));
-console.log(JSON.stringify(sessionMaker(1, "session1", "Don2history")));
+
+/**
+ * Creates history object
+ * @param {Date} dateTime timestamp
+ * @param {String} temp temp
+ */
+function historyMaker(temp) {
+  const history = {};
+
+  if (temp !== null || undefined) {
+    history['temp'] = temp;
+
+    return history;
+  } else {
+    console.error("Empty parameters for objGen.historyMaker");
+  }
+}
 
 
 /**
@@ -38,13 +58,17 @@ console.log(JSON.stringify(sessionMaker(1, "session1", "Don2history")));
 function userMaker(inputID, inputName, inputEmail, inputPW) {
   const user = {};
 
-  const pwHash = crypto.createHash('sha256').update(inputPW).digest('hex');
-  user['id'] = inputID;
-  user['name'] = inputName;
-  user['email'] = inputEmail;
-  user['password'] = pwHash;
+  if ((inputID != null || undefined) && (inputID.length > 0 || inputID > 0)) {
+    const pwHash = crypto.createHash('sha256').update(inputPW).digest('hex');
+    user['id'] = inputID;
+    user['name'] = inputName;
+    user['email'] = inputEmail;
+    user['password'] = pwHash;
 
-  return user;
+    return user;
+  } else {
+    console.error("Problem with inputID for objGen.userMaker");
+  }
 }
 
 
@@ -58,14 +82,18 @@ function userMaker(inputID, inputName, inputEmail, inputPW) {
 function sessionMaker(inputID, inputSession, inputHistoryID) {
   const user = {};
 
-  const sessionHash = crypto.createHash('sha256').update(inputSession).digest('hex');
-  const historyHash = crypto.createHash('sha256').update(inputHistoryID).digest('hex');
+  if ((inputID != null || undefined) && (inputID.length > 0 || inputID > 0)) {
+    const sessionHash = crypto.createHash('sha256').update(inputSession).digest('hex');
+    const historyHash = crypto.createHash('sha256').update(inputHistoryID).digest('hex');
 
-  user['id'] = inputID;
-  user['session'] = sessionHash;
-  user['historyID'] = historyHash;
+    user['id'] = inputID;
+    user['session'] = sessionHash;
+    user['historyID'] = historyHash;
 
-  return user;
+    return user;
+  } else {
+    console.error("Problem with inputID for objGen.sessionMaker");
+  }
 }
 
-module.exports = { userMaker, sessionMaker }
+module.exports = { userMaker, sessionMaker, historyMaker }
