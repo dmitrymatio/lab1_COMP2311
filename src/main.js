@@ -5,22 +5,20 @@
  */
 
 
-const { userMaker, sessionMaker, historyMaker } = require("./objGen");
+const { userMaker, sessionMaker } = require("./objGen");
 const { read, readDir } = require("./io/read");
 const write = require("./io/write").main;
 
 const fileNameObj = {
-  user: "users.txt",
-  session: "session.txt",
+  user: "users",
+  session: "session",
 }
-
 
 const historyDBPath = "../db/history"
 const userDBPath = "../db/users"
 const sessionDBPath = "../db/sessions"
 
-const [users, sessions] = [[], []];
-let parsedUsers = [];
+const [users, sessions, history, parsedUsers, parsedSessions] = [[], [], [], [], []];
 
 
 /**
@@ -32,37 +30,87 @@ let parsedUsers = [];
  * 4. fix setTimeout parsedUsers
  * 
  */
-const user = userMaker(3, "Don", "don@abc.ca", "abc123");
-const session = sessionMaker(3, "Don3", "Don");
-// const history = historyMaker("25C");
-
-users.push(user);
-sessions.push(session);
-// console.log(...users, ...sessions);
 
 
+main()
 function main() {
-  continue;
+  // for (let i = 1; i <= 10; i++) {
+  //   setTimeout(() => { populate(i, `Don ${i}`, `don${i}@test.ca`, `testpw${i}`, `${i + 10}`) }, 100);
+  // }
+
+  DBRead(`${userDBPath}/${fileNameObj.user}`, "user");
+  DBRead(`${sessionDBPath}/${fileNameObj.session}`, "session");
+
+  checkDir(userDBPath);
+  checkDir(sessionDBPath);
+  checkDir(historyDBPath);
+
+  function getRndInteger(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
+  }
+
+  setTimeout(() => console.log(history), 10);
+  setTimeout(() => console.log(parsedUsers), 10);
+  setTimeout(() => console.log(parsedSessions), 10);
+
+  setTimeout(() => {
+    console.log(historyMatch(parsedSessions, history[getRndInteger(0, history.length)]));
+  }, 100);
+
+
 }
 
-// userDBWrite(user);
-// sessionDBWrite(session);
-// historyDBWrite("25C");
 
-userDBRead(`${userDBPath}/${fileNameObj.user}`);
-setTimeout(() => console.log(parsedUsers), 100);
+function historyMatch(sessions, history) {
+  let state;
+
+  sessions.forEach(session => {
+    if (session.obj.historyID === history) {
+      state = session;
+    }
+  })
+  return state;
+}
 
 
-checkDir(userDBPath);
+async function populate(id, name, email, pw, temp = 0) {
+  const user = userMaker(id, name, email, pw);
+  const session = sessionMaker(id, String(rand()), String(rand()));
+
+  // users.push(user);
+  // sessions.push(session);
+
+  // bug => creating the files only appends 1 user, where as appending to file appends all users.
+  await userDBWrite(user);
+  await sessionDBWrite(session);
+  setTimeout(() => { historyDBWrite(session, temp) }, 0);
+
+  function rand() {
+    const num = Math.random();
+    return num;
+  }
+}
+
+
+function extract(arr, path) {
+  switch (path) {
+    case historyDBPath: arr.forEach(item => history.push(item));
+      break
+    case userDBPath:
+    case sessionDBPath:
+      break
+  }
+}
+
+
 function checkDir(path) {
   readDir(path)
-    .then(file => console.log(file))
+    .then(file => extract(file, path))
     .catch(err => console.log(err));
 }
 
 
-
-function parse(data) {
+function parse(data, type) {
   return new Promise((resolve, reject) => {
     const allData = data.split("\n");
 
@@ -72,34 +120,42 @@ function parse(data) {
         const obj = {};
         obj["time"] = Date.parse(timeStamp_obj_arr[0].trim());
         obj["obj"] = JSON.parse(timeStamp_obj_arr[1].trim());
-        parsedUsers.push(obj);
+
+        switch (type) {
+          case "user": parsedUsers.push(obj);
+            break;
+          case "session": parsedSessions.push(obj);
+            break;
+          default:
+            console.error("Incorrect type specified to parse")
+        }
       }
     })
   })
 }
 
 
-function userDBRead(path) {
+function DBRead(path, type) {
   return new Promise((resolve, reject) => {
     read(path)
       .then(data => {
-        parse(data)
+        parse(data, type)
       })
       .catch(err => reject((err)));
   })
 }
 
 
-function historyDBWrite(temp) {
-  write(historyDBPath, session.session, temp);
+function historyDBWrite(sessionObj, temp) {
+  write(historyDBPath, sessionObj.historyID, temp);
 }
 
 
-function userDBWrite(obj) {
-  write(userDBPath, fileNameObj.user, JSON.stringify(obj));
+function userDBWrite(userObj) {
+  write(userDBPath, fileNameObj.user, JSON.stringify(userObj));
 }
 
 
-function sessionDBWrite(obj) {
-  write(sessionDBPath, fileNameObj.session, JSON.stringify(obj));
+function sessionDBWrite(sessionObj) {
+  write(sessionDBPath, fileNameObj.session, JSON.stringify(sessionObj));
 }

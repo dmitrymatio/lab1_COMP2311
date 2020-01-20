@@ -30,7 +30,7 @@ const crypto = require('crypto');
 
 
 /**
- * Creates history object
+ * Creates history object ***NOT USED***
  * @param {Date} dateTime timestamp
  * @param {String} temp temp
  */
@@ -39,6 +39,7 @@ function historyMaker(temp) {
 
   if (temp !== null || undefined) {
     history['temp'] = temp;
+    history['dayTime'] = new Date.now().toLocalString();
 
     return history;
   } else {
