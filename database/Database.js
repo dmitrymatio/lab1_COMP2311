@@ -1,7 +1,7 @@
 const fs = require('fs').promises;
 class Database {
     constructor(path){
-        this.path = path;
+        this.path = __dirname + '/' + path;
     }
     add(item){
         return new Promise((reslove,reject) => {
@@ -18,7 +18,16 @@ class Database {
         });
     }
     delete(id){
-
+        return new Promise((resolve , reject) => {
+            this.list()
+            .then(data => {
+                let oldList = JSON.parse(data);
+                let newList = oldList.filter(item => item.id != id);
+                fs.writeFile(this.path , JSON.stringify(newList));
+                resolve({status : 0})
+            })
+            .catch(err => reject({status : '1' , msg : err.message}));
+        });
     }
     find(id){
         return new Promise((resolve,reject) => {
@@ -28,14 +37,24 @@ class Database {
                 let searchResult = data.filter(item => item.id == id)[0];
                 searchResult ?  resolve(searchResult) :  reject({status : '1' , msg : err.message}); 
             })
-            .catch(err => reject({status : '1' , msg : "No record found"}))
+            .catch(err => reject({status : '1' , msg : "No record found"}));
         });
     }
     async list(){
         return fs.readFile(this.path , {'encoding' : 'utf8'});
     }
-    edit(item){
-
+    edit(editItem){
+        return new Promise((resolve , reject) => {
+            this.list()
+            .then(data => {
+                data = JSON.parse(data);
+                data = data.filter(item => item.id != editItem.id);
+                data.push(editItem);
+                fs.writeFile(this.path , JSON.stringify(data));
+                resolve({status : 0});
+            })
+            .catch(err => reject({status : '1' , msg : err}));
+        });
     }
 }
 let db = new Database('database.json');
@@ -43,6 +62,12 @@ let db = new Database('database.json');
 // .then(data => console.log('Successful'))
 // .catch(err => console.log(err.msg))
 // //{"id" : 1 , "useId" : 1 , "unit" : "C" , "Time" : "2020-01-20-18-59"}
-db.find(2)
-.then(data => console.log(data))
-.catch(err => console.log(err.msg))
+// db.find(2)
+// .then(data => console.log(data))
+// .catch(err => console.log(err.msg))
+// db.delete(1)
+// .then(data => console.log("!"))
+// .catch(err => console.log(err.msg))
+// db.edit({"id":1,"useId":3,"unit":"F","Time":"2020-01-20-18-59"})
+// .then(data => console.log("!"))
+// .catch(err => console.log(err.msg,'!'));
