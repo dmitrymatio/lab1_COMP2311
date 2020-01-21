@@ -8,7 +8,7 @@ document.querySelector('#temp-form').addEventListener('submit' , (e) => {
         method: 'POST', // *GET, POST, PUT, DELETE, etc.
         encoding : 'utf-8',
         mode: 'no-cors',
-        headers : {'content-type' : 'text/plain'},
+        headers : {'content-type' : 'text/plain '},
         body : value
     })
     .then(response => response.json())
