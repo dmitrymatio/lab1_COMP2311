@@ -1,0 +1,23 @@
+{
+  "name": "lab1_comp2311",
+  "version": "1.0.0",
+  "description": "Temperature conversion tool",
+  "main": "nodeServer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dmitrymatio/lab1_COMP2311.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dmitrymatio/lab1_COMP2311/issues"
+  },
+  "homepage": "https://github.com/dmitrymatio/lab1_COMP2311#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1"
+  }
+}
