@@ -12,10 +12,9 @@ app.get('/', (req,res) => {
 })
 
 app.post('/data', (req,res) => {
-    //let input = req.query;
-    console.log(req.body);
-    //res.json({"hello world": "hi"});
-    //console.log(input);
+    let userInput = req.body; // data is recieved in form of object 
+    let temp = userInput['temp']; // extracted data form 'temp' field what we need
+    console.log(temp); 
     res.send("data sent successfully")
 })
 
