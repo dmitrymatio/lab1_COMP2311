@@ -10,15 +10,15 @@ document.querySelector("#temp-form").addEventListener("submit", e => {
   const converted = convertValue(value);
   let response = fetch("http://localhost:8080/data", {
     method: "POST",
-    encoding: "utf-8",
+    encoding: "utf-8",  
     headers: { "content-type": "application/json" },
     body: JSON.stringify({ temp : converted })
   })
     .then(response => response.json())
     .then(
-      jsonData => (document.querySelector("body").innerHTML += jsonData.message)
+      jsonData => (document.querySelector("#msg").innerHTML += jsonData.message)
     )
-    .catch(err => (document.querySelector("body").innerHTML += err));
+    .catch(err => (document.querySelector("#msg").innerHTML += err));
 });
 
 const convertValue = value => {

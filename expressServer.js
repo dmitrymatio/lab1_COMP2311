@@ -23,11 +23,12 @@ app.get("/script.js", (req, res) => {
 
 app.post("/data", (req, res) => {
     let userInput = req.body; // data is recieved in form of object
-    let temp = userInput["temp"]; // extracted data form 'temp' field what we need
+    let temp = userInput["temp"];
+    console.log(temp); // extracted data form 'temp' field what we need
     let today =  new Date();
     let now = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()+ '-' + today.getHours() + ':' + today.getMinutes() ;
     userLog.add({userId : 1 , time : now , temp : temp })
-    .then(data => res.send("data saved successfully"))
+    .then(data => res.send({status : 0 , message : "Successful"}))
     .catch(err => res.send(err));
     
 });
