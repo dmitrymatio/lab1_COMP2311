@@ -12,7 +12,7 @@ document.querySelector("#temp-form").addEventListener("submit", e => {
     method: "POST",
     encoding: "utf-8",
     headers: { "content-type": "application/json" },
-    body: JSON.stringify({ temp: converted })
+    body: JSON.stringify({ temp : converted })
   })
     .then(response => response.json())
     .then(

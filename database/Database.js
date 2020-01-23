@@ -1,4 +1,5 @@
 const fs = require('fs').promises;
+const uuid = require('uuid/v1');
 class Database {
     constructor(path){
         this.path = __dirname + '/' + path;
@@ -8,6 +9,7 @@ class Database {
             this.list()
             .then(data => {
                 let newList = JSON.parse(data);
+                data.id = uuid();
                 console.log(newList)
                 newList.push(item);
                 console.log(newList)
@@ -57,7 +59,8 @@ class Database {
         });
     }
 }
-let db = new Database('database.json');
+module.exports = Database;
+// let db = new Database('database.json');
 // db.add({"id" : 2 , "useId" : 1 , "unit" : "F" , "Time" : "2020-01-20-17-59"})
 // .then(data => console.log('Successful'))
 // .catch(err => console.log(err.msg))

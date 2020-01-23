@@ -1,7 +1,8 @@
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
-
+const Database = require('./database/Database.js');
+const userLog = new Database('userLog.json');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -23,8 +24,12 @@ app.get("/script.js", (req, res) => {
 app.post("/data", (req, res) => {
     let userInput = req.body; // data is recieved in form of object
     let temp = userInput["temp"]; // extracted data form 'temp' field what we need
-    console.log(temp);
-    res.send("data sent successfully");
+    let today =  new Date();
+    let now = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()+ '-' + today.getHours() + ':' + today.getMinutes() ;
+    userLog.add({userId : 1 , time : now , temp : temp })
+    .then(data => res.send("data saved successfully"))
+    .catch(err => res.send(err));
+    
 });
 
 app.listen(8080, () => {
