@@ -6,15 +6,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Temperature Conversion</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
 <body>
-    <form id="temp-form">
-        <input type=text placeholder="Enter number follow by C or F" id="temp-input" required minlength="2"
-            maxlength="5">
-        <input type="submit">
-    </form>
+    <div id="wrapper">
+
+
+        <div class="top-wrapper">
+            <p id="instructions">Enter number followed by C or F</p>
+        </div>
+
+        <form id="temp-form">
+            <input type=text placeholder="Temperature.." id="temp-input" required minlength="2" maxlength="5">
+            <input type="submit" id="temp-button">
+        </form>
+
+
+        <div class="bottom-wrapper">
+            <div class="block-MaxMinCaption">
+                <p class="MaxTemp">Temp<br>Celsius (<sup>o</sup>C)</p>
+                <p class="MinTemp">Temp<br>Farenheit (<sup>o</sup>F)</p>
+            </div>
+            <div class="block-MaxMinValues">
+                <p class="MaxTempValue"> 0<sup>o</sup></p>
+                <p class="MinTempValue"> 0<sup>o</sup></p>
+            </div>
+        </div>
+    </div>
     <script src="script.js"></script>
+
 </body>
 
 </html>
