@@ -20,5 +20,3 @@ app.post("/data", (req, res) => {
 app.listen(8080, () => {
   console.log("server running");
 });
-
-//comment for testing merge
