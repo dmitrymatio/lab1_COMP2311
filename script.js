@@ -9,14 +9,12 @@ const report = (celsius, fahrenheit) => {
 document.querySelector('#temp-form').addEventListener('submit', (e) => {
     e.preventDefault();
     const value = document.querySelector('#temp-input').value.toLowerCase();
-
-    
+    const converted = convertValue(value);
     let response = fetch('http://localhost:8080/data', {
         method: 'POST', 
         encoding: 'utf-8',
-        mode: 'no-cors',
-        headers: { 'content-type': 'text/plain' },
-        body: {temp : convertValue(value)}
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({temp : converted})
     })
     .then(response => response.json())
     .then(jsonData => document.querySelector('body').innerHTML += jsonData.message)
